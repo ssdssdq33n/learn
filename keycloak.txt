@@ -1,0 +1,8 @@
+- Tài liệu keycloak: https://www.youtube.com/watch?v=GAKppXwPelw&list=PL2xsxmVse9IYN20XBnf7dXUNnErtzP1ov , https://www.youtube.com/watch?v=DLszg2ul85U
+- Tài liệu git: https://github.com/devteria/keycloak-integration.git
+- KeyCloak: là ủy quyền đăng nhập
+- Các bước: tạo realm
+
+- Client-id và Client-secret là thông tin quan trọng , có thể tương tác với tất cả user
+
+- Nếu mà muốn sử dụng dạng post api URLENCODED_VALUE thì phải dùng anotation là @QueryMap

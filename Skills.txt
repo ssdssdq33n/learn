@@ -1,0 +1,28 @@
+- Các kỹ năng backend: apacha kafka, microservice, rabbit mq, OAuth2, spring boot, java core, docker, spring sercurity, web socket
+
+- Các kỹ năng frontend: html css, javascript, typescript, nodejs, nextjs, reactjs, vuejs, taiwind, bootstrap, React native, Flutter
+
+- Các kỹ năng db: mysql, mongodb, neo4j
+
+- Các kỹ năng khác: git, figma, tiếng anh
+
+- Cần học: KeyCloak, spring security: done
+
+- Đọc tài liệu luồng mô tả ePay từ skype của anh Đại
+
+- Tìm hiểu StreamingResponse :done
+
+- stream response : https://www.youtube.com/watch?v=JxIQCOrsxxg
+
+- Sử dụng kafka để truyền thông tin đến notifycation , để giảm thiểu lượng api truyền đến của service
++  Khi tạo 1 user thì sẽ gửi message lên kafka, những service nào muốn sử dụng thì tự listen để lấy dữ liệu về
++ Group-Id trong kafka:
+Phân phối tải giữa các consumer: Khi nhiều consumer thuộc cùng một group.id, Kafka sẽ đảm bảo rằng mỗi phân vùng (partition) của topic chỉ được một consumer duy nhất trong nhóm tiêu thụ. Điều này giúp phân phối công việc tiêu thụ giữa các consumer trong cùng một nhóm, tránh việc hai consumer cùng đọc một phân vùng.
+
+Quản lý offset: Kafka lưu trữ thông tin offset của mỗi partition trong một consumer group. Offset là vị trí hiện tại của consumer trong partition, cho biết đến đâu thì consumer đã tiêu thụ. Nếu một consumer dừng lại và sau đó khởi động lại, nó sẽ tiếp tục tiêu thụ từ offset cuối cùng đã lưu trữ cho group.id đó.
+
+Tính năng failover: Nếu một consumer trong nhóm ngừng hoạt động (do sự cố hoặc tắt), Kafka sẽ tự động phân phối lại các phân vùng mà consumer đó đang tiêu thụ cho các consumer khác trong cùng nhóm. Điều này giúp đảm bảo rằng việc tiêu thụ dữ liệu không bị gián đoạn.
+
+Tạo sự độc lập giữa các nhóm consumer: Các nhóm consumer với group.id khác nhau sẽ tiêu thụ dữ liệu một cách độc lập. Điều này có nghĩa là nhiều nhóm có thể tiêu thụ cùng một topic mà không ảnh hưởng đến nhau.
+
+- Map/Dictionary-Based Strategy design pattern: Ví dụ khi đăng bài thì sẽ hiện số phút đã đăng( 1 phút trước, 2 phút trước)

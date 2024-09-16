@@ -1,0 +1,20 @@
+<configuration>
+    <appender name="elasticsearch" class="org.appenders.logback.elasticsearch.ElasticsearchAppender">
+        <serverUris>http://localhost:9200</serverUris>
+        <indexName>spring-boot-log</indexName>
+        <typeName>_doc</typeName>
+        <auth>
+            <basicAuth>
+                <username>elastic</username>
+                <password>mim123456</password>
+            </basicAuth>
+        </auth>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="elasticsearch" />
+    </root>
+</configuration>

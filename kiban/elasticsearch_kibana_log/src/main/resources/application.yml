@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: dev  # hoặc production tùy thuộc vào môi trường của bạn
+
+logging:
+  logstash:
+    host: localhost
+    port: 5000
+
+elasticsearch:
+  url: http://localhost:9200
+  username: elastic
+  password: mim123456

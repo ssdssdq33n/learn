@@ -1,0 +1,1 @@
+- docker run -d -p 8080:80 docker/welcome-to-docker -> chạy docker image, nếu không có thì sẽ tự động pull về. 8080 là tự định nghĩa cổng để là cầu nối giữa docker và máy tính, -d là để ứng dụng chạy ngầm, -p là port, 8080:80 là lấy cổng 80 của docker desktop ra định nghĩa thành 8080 của máy tính, docker/welcome-to-docker là image trong đó docker là username 

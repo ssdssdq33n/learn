@@ -1,0 +1,8 @@
+- Có 5 loại grant types:
+ + Authorization Code  -> Hay đc sử dụng, backend sẽ exchange code để tạo token 
+ + Implicit
+ + Resource Owner Password Credentials
+ + Client Credentials
+ + Refresh Token
+
+- Onboarding google: khi đăng nhập bằng google thì sẽ onboard trong server, onboard user như là đăng ký 1 tài khoản trong server 

@@ -1,0 +1,102 @@
+- docker run -d -p 8080:80 docker/welcome-to-docker -> chạy docker image, nếu không có thì sẽ tự động pull về. 8080 là tự định nghĩa cổng để là cầu nối giữa docker và máy tính, -d là để ứng dụng chạy ngầm, -p là port, 8080:80 là lấy cổng 80 của docker desktop ra định nghĩa thành 8080 của máy tính, docker/welcome-to-docker là image trong đó docker là username 
+
+- docker run -d -p 3000:3000 --name my-running-app my-nextjs-app -> chạy container từ image và đặt tên
+
+- docker start my-running-app -> chạy container có sẵn
+
+- docker build -t getting-started .  -> build ứng dụng, tạo ra với cái tên là getting-started ra 1 cái image, dấu . để copy hết tất cả các thư mục để build
+
+- docker compose watch  -> kéo ứng dụng về 
+
+- Cập nhật docker thì phải build lại image
+
+- docker ps ->xem danh sách ứng dụng đang chạy
+- docker ps -a ->log ra hết danh sách
+
+- -p 3001:3000: Tùy chọn này ánh xạ (map) cổng 3001 trên máy chủ (host) với cổng 3000 bên trong container. Điều này có nghĩa là khi bạn truy cập vào cổng 3001 trên máy của bạn, nó sẽ được chuyển tiếp vào cổng 3000 bên trong container. Nếu cổng 3000 bên trong container không đúng khi bạn xây dựng (build) container, tức là ứng dụng bên trong container không thực sự chạy trên cổng 3000, thì việc ánh xạ cổng này sẽ không có tác dụng như mong muốn
+
+- docker stop (container-id) -> dừng chạy container
+
+- docker rm (container-id) -> xóa chạy container
+
+- docker rm -f (container-id) -> dừng chạy container và xóa
+
+- docker build -t DOCKER_USERNAME/getting-started-todo-app:tag .  ->build tất cả folder trong ứng dụng trên tài khoản username VD: docker build -t tuananh33/getting-started-todo-app . , tên getting-started-todo-app có thể tự đặt, Câu lệnh này chỉ có thể build và đẩy lên máy cục bộ, Nếu muốn đẩy tiếp lên docker hub thì dùng câu lệnh: docker push DOCKER_USERNAME/getting-started-todo-app:tag 
+
+- Tạo repository (tạo không gian lưu trữ trên docker hub):
+ + docker tag getting-started tuananh33/getting-started-todo-app:tagname  -> định nghĩa ảnh getting-started trong tài khoản username có thể push lên trên dockerHub, tagname là version, nếu bỏ phần tagname đi thì sẽ tự động hiểu là latest
+ + docker image ls ->kiểm tra xem ảnh đã tồn tại hay chưa
+ + docker push DOCKER_USERNAME/getting-started-todo-app:tagname -> push image lên repository trên dockerHub
+
+- docker run -dp 3000:3000 tuananh33/getting-started-todo-app  -> kéo ảnh về và chạy trên username tuananh33
+
+- docker exec (container-id) cat /data.txt  -> đi đến file data.txt trong image 
+
+- docker run alpine cat greeting.txt  -> Chạy tệp greeting.txt
+
+- docker logs -f (container-id) -> kiểm tra log đến đâu 
+
+- GHI DATA VỚI VOLUME - PERSIST DATA  -> Tạo là chia sẻ data để những container khác đều dùng được data đó
+ + docker volume create todo-db -> tạo nơi lưu trữ db
+ + docker run -dp 3002:3000 --mount type=volume,src=todo-db,target=/etc/todos getting-started -> chạy lại container mới với db là todo-db
+
+- Use bind mounts  -> thay đổi liên kết và chạy lại ứng dụng
+ + docker run -dp 3000:3000 `
+    -w /app --mount "type=bind,src=$pwd,target=/app" `
+    node:18-alpine `
+    sh -c "yarn install && yarn run dev"    -> sửa trong code thì toàn giao diện ở local đều có thể thay đổi
+
+- Cả persist data với bind mouts đều chỉ có thể làm trên local
+
+- Mỗi 1 container nên chỉ làm 1 việc
+
+- Network -> Nơi giao tiếp những container trong network
+ + docker network create todo-app -> Tạo network
+ + docker run -d `
+    --network todo-app --network-alias mysql `
+    -v todo-mysql-data:/var/lib/mysql `
+    -e MYSQL_ROOT_PASSWORD=secret `
+    -e MYSQL_DATABASE=todos `
+    mysql:8.0  -> tải mysql và tạo db, -w /app -v "$(pwd):/app" -> là tạo ra 1 folder app rồi copy hết code ở root vào thư mục app
+ + docker exec -it <mysql-container-id> mysql -u root -p  -> đăng nhập vào mysql
+ + Kết nối tới db
+   * docker run -it --network todo-app nicolaka/netshoot
+- docker exec -it <mysql-container-id> mysql -p todos -> đăng nhập vào mysql với database là todos (mở cmd của mysql)
+
+- docker compose -> tạo file docker compose trong ứng dụng. Docker file là chỉ build ra đc từng ứng dụng , còn docker compose thì có thể build đc cả ứng dụng
+ + services -> Đóng vai trò như 1 network để kết nối các ứng dụng với nhau
+ + services:
+  app:
+    image: node:18-alpine -> kéo image nodejs về để chạy
+    command: sh -c "yarn install && yarn run dev"
+    ports:
+      - 127.0.0.1:3000:3000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: todos
+
+  mysql:
+    image: mysql:8.0 -> kéo image mysql về để chạy
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: todos
+
+volumes:
+  todo-mysql-data:
+ + docker-compose build
+ +  docker compose -p (name) up -d -> chạy docker compose, name có thể có hoặc không, là tên image tự đặt , nếu ko có thì sẽ lấy name ngẫu nhiên
+
+- Tạo file .dockerignore để đưa những package không muốn build lên docker vào đó
+
+- docker compose up -d  -> Nếu trong docker đã từng có container build từ docker-compose rồi, thì chỉ cần chạy câu lệnh này là có thể chạy tiếp
+
+- expose:
+       - 3306    -> Để chia sử port cho những container khác trong service có thể giao tiếp đc với nhau
+

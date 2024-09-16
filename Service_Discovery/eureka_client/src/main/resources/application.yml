@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: eureka-client  # Tên c?a d?ch v? trong h? th?ng
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  # ??a ch? c?a Eureka Server
